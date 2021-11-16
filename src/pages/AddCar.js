@@ -1,9 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import CarService from "../services/CarService";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 
 function AddCar() {
   const history = useHistory();
+  let { id } = useParams();
+
+  //   if (id) {
+  //     CarService.get(id).then((data) => {
+  //       setNewCar(data);
+  //     });
+  //   }
 
   const [newCar, setNewCar] = useState({
     brand: "",
@@ -48,12 +55,25 @@ function AddCar() {
 
   const addNewCar = (e) => {
     e.preventDefault();
-
+    if (id) {
+      const newCarAdd = CarService.edit(id, newCar).then((data) => {
+        console.log(data);
+        history.push("/cars");
+      });
+    }
     const newCarAdd = CarService.add(newCar).then((data) => {
       console.log(data);
       history.push("/cars");
     });
   };
+
+  useEffect(() => {
+    if (id) {
+      CarService.get(id).then((data) => {
+        setNewCar(data);
+      });
+    }
+  }, []);
 
   return (
     <div>
@@ -61,7 +81,7 @@ function AddCar() {
         <input
           required
           type="text"
-          minlength="2"
+          minLength="2"
           value={newCar.brand}
           placeholder="Brand"
           onChange={({ target }) =>
@@ -71,7 +91,7 @@ function AddCar() {
         <input
           required
           type="text"
-          minlength="2"
+          minLength="2"
           value={newCar.model}
           placeholder="Model"
           onChange={({ target }) =>

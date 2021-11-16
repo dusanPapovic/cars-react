@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import CarService from "../services/CarService";
+import { Link } from "react-router-dom";
 
 function AppCars() {
   const [cars, setCars] = useState([]);
@@ -23,6 +24,7 @@ function AppCars() {
             <p>Automatic: {car.isAutomatic.toString()}</p>
             <p>Engine: {car.engine}</p>
             <p>Number of doors: {car.numberOfDoors}</p>
+            <Link to={`/edit/${car.id}`}>Edit</Link>
           </li>
         ))}
       </ul>

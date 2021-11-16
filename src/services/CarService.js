@@ -30,6 +30,30 @@ class CarService {
 
     return null;
   }
+
+  async get(id) {
+    try {
+      const { data } = await this.httpClient.get(`/cars/${id}`);
+      console.log(data);
+      return data;
+    } catch (error) {
+      console.log("error", error);
+    }
+
+    return null;
+  }
+
+  async edit(id, car) {
+    try {
+      const { data } = await this.httpClient.put(`/cars/${id}`, car);
+      console.log(data);
+      return data;
+    } catch (error) {
+      console.log("error", error);
+    }
+
+    return null;
+  }
 }
 
 export default new CarService();

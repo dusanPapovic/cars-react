@@ -30,6 +30,9 @@ function App() {
           <Route exact path="/add">
             <AddCar />
           </Route>
+          <Route exact path="/edit/:id">
+            <AddCar />
+          </Route>
         </Switch>
       </Router>
     </div>
