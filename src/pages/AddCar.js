@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import CarService from "../services/CarService";
+import { useHistory } from "react-router-dom";
 
 function AddCar() {
+  const history = useHistory();
+
   const [newCar, setNewCar] = useState({
     brand: "",
     model: "",
@@ -20,6 +23,25 @@ function AddCar() {
 
   const types = ["diesel", "petrol", "electric", "hybrid"];
 
+  const resetInputs = (e) => {
+    e.preventDefault();
+    setNewCar({
+      ...newCar,
+      brand: "",
+      model: "",
+      year: "",
+      maxSpeed: "",
+      isAutomatic: "",
+      engine: "",
+      numberOfDoors: "",
+    });
+  };
+
+  const preview = (e) => {
+    e.preventDefault();
+    alert(JSON.stringify(newCar));
+  };
+
   const handleChangeYear = (e) => {
     setNewCar({ ...newCar, year: e.target.value });
   };
@@ -27,14 +49,19 @@ function AddCar() {
   const addNewCar = (e) => {
     e.preventDefault();
 
-    const newCarAdd = CarService.add(newCar).then((data) => console.log(data));
+    const newCarAdd = CarService.add(newCar).then((data) => {
+      console.log(data);
+      history.push("/cars");
+    });
   };
 
   return (
     <div>
       <form onSubmit={addNewCar}>
         <input
+          required
           type="text"
+          minlength="2"
           value={newCar.brand}
           placeholder="Brand"
           onChange={({ target }) =>
@@ -42,7 +69,9 @@ function AddCar() {
           }
         />
         <input
+          required
           type="text"
+          minlength="2"
           value={newCar.model}
           placeholder="Model"
           onChange={({ target }) =>
@@ -63,6 +92,7 @@ function AddCar() {
           }
         />
         <input
+          required
           type="number"
           value={newCar.numberOfDoors}
           placeholder="Number of doors"
@@ -88,6 +118,7 @@ function AddCar() {
         {types.map((type) => (
           <div key={type}>
             <input
+              required
               type="radio"
               name="site_name"
               value={type}
@@ -102,7 +133,9 @@ function AddCar() {
             {type}
           </div>
         ))}
-        <button>Add new</button>
+        <button onClick={(e) => resetInputs(e)}>Reset</button>
+        <button onClick={(e) => preview(e)}>Preview</button>
+        <button type="submit">Add new</button>
       </form>
     </div>
   );
