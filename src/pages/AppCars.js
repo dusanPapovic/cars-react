@@ -17,7 +17,13 @@ function AppCars() {
     e.preventDefault();
     const deleteCar = CarService.delete(id).then((data) => {
       console.log(data);
-      history.push("/cars");
+      console.log(cars);
+      //   CarService.getAll().then((data) => {
+      //     setCars(data);
+      //   });
+      const afterDeleteCars = cars.filter((car) => car.id !== id);
+      setCars(afterDeleteCars);
+      console.log(cars);
     });
   };
 
